@@ -50,42 +50,6 @@ $ laravel-echo-server stop
 
 Edit the default configuration of the server by adding options to your **echo-server.php** file.
 
-| Title              | Default                         | Description                                                                                                                |
-| :----------------- | :------------------------------ | :------------------------------------------------------------------------------------------------------------------------- |
-| `apiOriginAllow`   | `{}`                            | Configuration to allow API be accessed over CORS. [Example](#cross-domain-access-to-api)                                   |
-| `authEndpoint`     | `/broadcasting/auth`            | The route that authenticates private channels                                                                              |
-| `authHost`         | `http://localhost`              | The host of the server that authenticates private and presence channels                                                    |
-| `database`         | `redis`                         | Database used to store data that should persist, like presence channel members. Options are currently `redis` and `sqlite` |
-| `databaseConfig`   | `{}`                            | Configurations for the different database drivers [Example](#database)                                                     |
-| `devMode`          | `false`                         | Adds additional logging for development purposes                                                                           |
-| `host`             | `null`                          | The host of the socket.io server ex.`app.dev`. `null` will accept connections on any IP-address                            |
-| `port`             | `6001`                          | The port that the socket.io server should run on                                                                           |
-| `protocol`         | `http`                          | Must be either `http` or `https`                                                                                           |
-| `sslCertPath`      | `''`                            | The path to your server's ssl certificate                                                                                  |
-| `sslKeyPath`       | `''`                            | The path to your server's ssl key                                                                                          |
-| `sslCertChainPath` | `''`                            | The path to your server's ssl certificate chain                                                                            |
-| `sslPassphrase`    | `''`                            | The pass phrase to use for the certificate (if applicable)                                                                 |
-| `socketio`         | `{}`                            | Options to pass to the socket.io instance ([available options](https://github.com/socketio/engine.io#methods-1))           |
-| `subscribers`      | `{"http": true, "redis": true}` | Allows to disable subscribers individually. Available subscribers: `http` and `redis`                                      |
-
-### DotEnv
-
-If a .env file is found in the same directory as the laravel-echo-server.json
-file, the following options can be overridden:
-
-- `authHost`: `LARAVEL_ECHO_SERVER_AUTH_HOST` _Note_: This option will fall back to the `LARAVEL_ECHO_SERVER_HOST` option as the default if that is set in the .env file.
-- `host`: `LARAVEL_ECHO_SERVER_HOST`
-- `port`: `LARAVEL_ECHO_SERVER_PORT`
-- `devMode`: `LARAVEL_ECHO_SERVER_DEBUG`
-- `databaseConfig.redis.host`: `LARAVEL_ECHO_SERVER_REDIS_HOST`
-- `databaseConfig.redis.port`: `LARAVEL_ECHO_SERVER_REDIS_PORT`
-- `databaseConfig.redis.password`: `LARAVEL_ECHO_SERVER_REDIS_PASSWORD`
-- `protocol`: `LARAVEL_ECHO_SERVER_PROTO`
-- `sslKeyPath`: `LARAVEL_ECHO_SERVER_SSL_KEY`
-- `sslCertPath`: `LARAVEL_ECHO_SERVER_SSL_CERT`
-- `sslPassphrase`: `LARAVEL_ECHO_SERVER_SSL_PASS`
-- `sslCertChainPath`: `LARAVEL_ECHO_SERVER_SSL_CHAIN`
-
 ### Running with SSL
 
 - Your client side implementation must access the socket.io client from https.
