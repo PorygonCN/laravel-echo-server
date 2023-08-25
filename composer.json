@@ -1,0 +1,26 @@
+{
+    "name": "porygon/laravel-echo-server",
+    "description": "laravel-echo-server var.workerman",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Porygon\\LaravelEchoServer\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "cyw",
+            "email": "1764887758@qq.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Porygon\\LaravelEchoServer\\EchoServerServiceProvider"
+            ]
+        }
+    }
+}
