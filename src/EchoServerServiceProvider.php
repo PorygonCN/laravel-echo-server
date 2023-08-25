@@ -53,12 +53,19 @@ class EchoServerServiceProvider extends ServiceProvider
     public function init()
     {
         $this->publishes([__DIR__ . '/../config/echo-server.php' => config_path('echo-server.php'),], "laravel-echo-server-config");
-        $this->publishes([__DIR__ . '/../database/create_echo_server_apps_table.php' => database_path('migrations/' . now()->format("Y_m_d_H_i_s") . 'create_echo_server_apps_table.php'),], "laravel-echo-server-database");
-        $this->publishes([__DIR__ . '/../routes/echo-server-http-subscriber.php' => base_path('routes/echo-server-http-subscriber.php'),]);
+        $this->publishes([__DIR__ . '/../routes/echo-server-http-subscriber.php' => base_path('routes/echo-server-http-subscriber.php'),], "laravel-echo-server-http-subscriber");
+
         $this->commands(EchoServerCommand::class);
+
         $this->loadRoutes();
+
+        $this->loadMigrations();
     }
 
+    public function loadMigrations()
+    {
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+    }
     public function loadRoutes()
     {
         $this->loadRoutesFrom(__DIR__ . '/../routes/api.php');

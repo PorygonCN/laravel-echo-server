@@ -10,22 +10,22 @@ The following are required to function properly.
 *   Redis 3+
 
 Additional information on broadcasting with Laravel can be found on the
-official docs: 
+official docs: [Laravel-broadcasting](https://laravel.com/docs/broadcasting)
 
 ## Getting Started
 
-Install npm package globally with the following command:
+Install package with the following command:
 
 ``` shell
-$   npm install -g laravel-echo-server
+$   composer require porygon/laravel-echo-server
 ```
 
-### Initialize with CLI Tool
+### Publish vendor files
 
-Run the init command in your project directory:
+Run command in your project directory:
 
 ``` shell
-$   laravel-echo-server init
+$   php artisan vendor:publish --provider=Porygon\\LaravelEchoServer\\EchoServerServiceProvider
 ```
 
 The cli tool will help you setup a **laravel-echo-server.json** file in the root directory of your project. This file will be loaded by the server during start up. You may edit this file later on to manage the configuration of your server.
