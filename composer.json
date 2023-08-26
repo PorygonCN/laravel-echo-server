@@ -16,7 +16,7 @@
   ],
   "minimum-stability": "dev",
   "require": {
-    "laravel/framework": "^7.0",
+    "laravel/framework": ">=7.0.0",
     "workerman/phpsocket.io": "^2.0",
     "workerman/redis": "^2.0",
     "workerman/workerman": "^4.1"
