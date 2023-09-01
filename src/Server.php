@@ -96,10 +96,10 @@ class Server extends ConsoleOutput
     {
         $this->io->on('connection', function ($socket) {
             $this->options['dev_mode'] && $this->info("[" . now()->format("Y-m-d H:i:s") . "] - " . "new socket [$socket->id] connected");
-            $socket->server->onSubscribe($socket);
-            $socket->server->onUnsubscribe($socket);
-            $socket->server->onDisconnecting($socket);
-            $socket->server->onClientEvent($socket);
+            $this->onSubscribe($socket);
+            $this->onUnsubscribe($socket);
+            $this->onDisconnecting($socket);
+            $this->onClientEvent($socket);
             event(new SocketConnectedEvent($socket));
         });
     }
@@ -109,7 +109,7 @@ class Server extends ConsoleOutput
         $socket->on(
             'subscribe',
             function ($data) use ($socket) {
-                $socket->server->channel->join($socket, $data);
+                $this->channel->join($socket, $data);
             }
         );
     }
@@ -121,7 +121,7 @@ class Server extends ConsoleOutput
             function ($data) use ($socket) {
                 $this->options['dev_mode'] && $this->info("[" . now()->format("Y-m-d H:i:s") . "] - " . "unsubscribe socket[{$socket->id}]");
 
-                $socket->server->channel->leave($socket, $data["channel"], 'unsubscribed');
+                $this->channel->leave($socket, $data["channel"], 'unsubscribed');
             }
         );
     }
@@ -134,7 +134,7 @@ class Server extends ConsoleOutput
                 $this->options['dev_mode'] && $this->info("[" . now()->format("Y-m-d H:i:s") . "] - " . "disconnecting socket[{$socket->id}]");
 
                 foreach ($socket->rooms as $room) {
-                    $socket->server->channel->leave($socket, $room, $reason);
+                    $this->channel->leave($socket, $room, $reason);
                 }
                 event(new SocketDisConnectedEvent($socket, $reason));
             }
@@ -148,7 +148,7 @@ class Server extends ConsoleOutput
             function ($data) use ($socket) {
                 $this->options['dev_mode'] && $this->info("[" . now()->format("Y-m-d H:i:s") . "] - " . "client event socket[{$socket->id}]");
 
-                $socket->server->channel->clientEvent($socket, $data);
+                $this->channel->clientEvent($socket, $data);
                 event(new SocketClientEvent($socket, $data));
             }
         );
