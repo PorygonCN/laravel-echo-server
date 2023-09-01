@@ -76,10 +76,8 @@ class Channel  extends ConsoleOutput
         if ($authenticate) {
             // dump("通过用户认证", $res);
             $socket->join($data['channel']);
-            $this->options['dev_mode'] && $this->info("[" . now()->format("Y-m-d H:i:s") . "] - " . "authenticate return response data :" . json_encode($res));
+            $this->options['dev_mode'] && $this->info("[" . now()->format("Y-m-d H:i:s") . "] - " . "authenticate socket [{$socket->id}] return response data :" . json_encode($res));
             if ($this->isPresence($data['channel'])) {
-                $this->options['dev_mode'] && $this->info("[" . now()->format("Y-m-d H:i:s") . "] - " . "channel [{$data['channel']}] is a [presence] channle");
-
                 $member = $res["channel_data"];
                 $this->presence->join($socket, $data['channel'], $member);
             }
@@ -199,9 +197,7 @@ class Channel  extends ConsoleOutput
      */
     public function onJoin(Socket $socket, $channel)
     {
-        if ($this->options->devMode) {
-            $this->options['dev_mode'] && $this->info("[" . now()->format("Y-m-d H:i:s") . "] - " . $socket->id . " joined channel: " . $channel);
-        }
+        $this->options['dev_mode'] && $this->info("[" . now()->format("Y-m-d H:i:s") . "] - socket [" . $socket->id . "] joined channel: " . $channel);
         event(new SocketJoinedChannelEvent($socket, $channel));
 
         foreach ($this->onJoins as $fn) {

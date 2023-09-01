@@ -21,7 +21,7 @@ class RedisSubscriber extends SubscriberAdapter
         $subscribed       = &$this->subscribed;
         $this->redis->psubscribe([$keyPrefix . '*'], function ($pattern, $channel, $message) use ($callback, $keyPrefix, &$subscribed) {
             if ($subscribed) {
-                $this->info("[" . now()->format("Y-m-d H:i:s") . "] - " . "get redis event channel[$channel] message[$message]");
+                $this->info("[" . now()->format("Y-m-d H:i:s") . "] - " . "get redis event channel[$channel] message[" . json_decode("$message") . "]");
                 // $this->options['dev_mode']&&$this->info("pattern $pattern, channel $channel, message $message");
                 $callback(Str::substr($channel, Str::length($keyPrefix)), json_decode($message));
             }

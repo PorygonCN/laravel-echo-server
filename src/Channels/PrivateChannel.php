@@ -17,7 +17,7 @@ class PrivateChannel  extends ConsoleOutput
 
     public function authenticate(Socket $socket, $data)
     {
-        $this->options['dev_mode'] && $this->info("[" . now()->format("Y-m-d H:i:s") . "] - " . "authorizating [$socket->id]");
+        $this->options['dev_mode'] && $this->info("[" . now()->format("Y-m-d H:i:s") . "] - " . "authorizating socket [$socket->id]");
 
         $authenticate = false;
         $request      = Http::withHeaders($this->prepareHeaders($socket, $this->options));

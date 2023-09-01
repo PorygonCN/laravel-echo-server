@@ -119,7 +119,7 @@ class Server extends ConsoleOutput
         $socket->on(
             'unsubscribe',
             function ($data) use ($socket) {
-                $this->options['dev_mode'] && $this->info("[" . now()->format("Y-m-d H:i:s") . "] - " . "unsubscribe socket[{$socket->id}]");
+                $this->options['dev_mode'] && $this->info("[" . now()->format("Y-m-d H:i:s") . "] - " . "unsubscribe socket [{$socket->id}]");
 
                 $this->channel->leave($socket, $data["channel"], 'unsubscribed');
             }
@@ -131,7 +131,7 @@ class Server extends ConsoleOutput
         $socket->on(
             'disconnecting',
             function ($reason) use ($socket) {
-                $this->options['dev_mode'] && $this->info("[" . now()->format("Y-m-d H:i:s") . "] - " . "disconnecting socket[{$socket->id}]");
+                $this->options['dev_mode'] && $this->info("[" . now()->format("Y-m-d H:i:s") . "] - " . "disconnecting socket [{$socket->id}]");
 
                 foreach ($socket->rooms as $room) {
                     $this->channel->leave($socket, $room, $reason);
@@ -146,7 +146,7 @@ class Server extends ConsoleOutput
         $socket->on(
             'client event',
             function ($data) use ($socket) {
-                $this->options['dev_mode'] && $this->info("[" . now()->format("Y-m-d H:i:s") . "] - " . "client event socket[{$socket->id}]");
+                $this->options['dev_mode'] && $this->info("[" . now()->format("Y-m-d H:i:s") . "] - " . "client event socket [{$socket->id}]");
 
                 $this->channel->clientEvent($socket, $data);
                 event(new SocketClientEvent($socket, $data));
@@ -169,10 +169,11 @@ class Server extends ConsoleOutput
      */
     public function broadcast($channel, $message)
     {
-        $this->options['dev_mode'] && $this->info("[" . now()->format("Y-m-d H:i:s") . "] - " . "boardcasting [$message->event] to channel [$channel]");
         if ($message->socket && $this->find($message->socket)) {
+            $this->options['dev_mode'] && $this->info("[" . now()->format("Y-m-d H:i:s") . "] - " . "boardcasting toOthers [$message->event] to channel [$channel]");
             return $this->toOthers($this->find($message->socket), $channel, $message);
         } else {
+            $this->options['dev_mode'] && $this->info("[" . now()->format("Y-m-d H:i:s") . "] - " . "boardcasting toAll [$message->event] to channel [$channel]");
             return $this->toAll($channel, $message);
         }
     }
@@ -199,6 +200,7 @@ class Server extends ConsoleOutput
      */
     public function toAll($channel, $message)
     {
+        // $this->io->sockets->adapter[$channel] = $channel;
         $this->io->to($channel)->emit($message->event, $channel, $message->data);
         return true;
     }
