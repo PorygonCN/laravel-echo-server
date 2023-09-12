@@ -7,6 +7,7 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 use PHPSocketIO\Socket;
 
 /**
@@ -19,9 +20,8 @@ class SocketJoinedChannelEvent
     /**
      * Create a new event instance.
      */
-    public function __construct(public Socket $echoSocket, public $channel)
+    public function __construct(public Socket $echoSocket, public $channel, public Channel $channelManager)
     {
-        //
     }
 
     /**
@@ -31,7 +31,6 @@ class SocketJoinedChannelEvent
      */
     public function broadcastOn(): array
     {
-        return [
-        ];
+        return [];
     }
 }

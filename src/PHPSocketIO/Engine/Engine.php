@@ -13,11 +13,17 @@ use PHPSocketIO\Engine\Protocols\Http\Request;
 use PHPSocketIO\Engine\Protocols\Http\Response;
 use PHPSocketIO\Engine\Engine as EngineEngine;
 use PHPSocketIO\Engine\Socket;
+use PHPSocketIO\SocketIO;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Engine extends EngineEngine
 {
+    /**
+     * @var SocketIO
+     */
+    public $io;
+
     public static $allowTransports = [
         'polling'   => 'polling',
         'websocket' => 'websocket',
@@ -28,7 +34,6 @@ class Engine extends EngineEngine
      */
     public function handshake($transport, $req)
     {
-        $id = bin2hex(pack('d', microtime(true)) . pack('N', function_exists('random_int') ? random_int(1, 100000000) : rand(1, 100000000)));
         if ($transport == 'websocket') {
             $transport = '\\PHPSocketIO\\Engine\\Transports\\WebSocket';
         } elseif ($transport == 'api') {
@@ -45,6 +50,7 @@ class Engine extends EngineEngine
 
         $transport->supportsBinary = !isset($req->_query['b64']);
 
+        $id = bin2hex(pack('d', microtime(true)) . pack('N', function_exists('random_int') ? random_int(1, 100000000) : rand(1, 100000000)));
         $socket = new Socket($id, $this, $transport, $req);
 
         /* $transport->on('headers', function(&$headers)use($id)
