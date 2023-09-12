@@ -8,6 +8,7 @@ use Porygon\LaravelEchoServer\Events\SocketLeftChannelEvent;
 use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use PHPSocketIO\Socket;
 
@@ -98,6 +99,7 @@ class Channel  extends ConsoleOutput
             try {
                 $data = json_decode($data);
             } catch (Exception $e) {
+                Log::error("[clientEvent] fail : {$e->getMessage()}");
                 $data = $data;
             }
         }
