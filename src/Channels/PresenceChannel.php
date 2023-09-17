@@ -5,6 +5,7 @@ namespace Porygon\LaravelEchoServer\Channels;
 use Porygon\LaravelEchoServer\ConsoleOutput;
 use Porygon\LaravelEchoServer\Databases\DatabaseAdapter;
 use Exception;
+use Illuminate\Support\Facades\Log;
 use PHPSocketIO\Socket;
 use PHPSocketIO\SocketIO;
 
@@ -80,6 +81,7 @@ class PresenceChannel  extends ConsoleOutput
                 $this->onJoin($socket, $channel, $member);
             }
         } catch (Exception $e) {
+            Log::error("[PresenceChannel::join] fail : {$e->getMessage()}");
             $this->error("[" . now()->format("Y-m-d H:i:s") . "] error retrieving pressence channel members :" . $e->getMessage());
         }
     }

@@ -28,7 +28,8 @@ class Server extends ConsoleOutput
     /**
      * @var DatabaseAdapter
      */
-    protected $db;
+    protected $database;
+
     protected $subscribers = [];
 
     public function __construct($options = [])
@@ -37,7 +38,7 @@ class Server extends ConsoleOutput
 
         // Worker::$pidFile     = app_path("Console/Commands/EchoServer/Server/pid/server.pid");
         $this->options       = collect($options);
-        $this->db            = app()->make($this->options["database"]);
+        $this->database      = app()->make($this->options["database"]);
         $this->subscribers[] = app()->make($this->options["redis_subscriber"]);
     }
 

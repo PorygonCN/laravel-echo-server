@@ -8,9 +8,12 @@ use Porygon\LaravelEchoServer\Events\SocketLeftChannelEvent;
 use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use PHPSocketIO\Socket;
-
+/**
+ * channel 控制器
+ */
 class Channel  extends ConsoleOutput
 {
     public $io;
@@ -98,6 +101,7 @@ class Channel  extends ConsoleOutput
             try {
                 $data = json_decode($data);
             } catch (Exception $e) {
+                Log::error("[clientEvent] fail : {$e->getMessage()}");
                 $data = $data;
             }
         }
@@ -198,7 +202,7 @@ class Channel  extends ConsoleOutput
     public function onJoin(Socket $socket, $channel)
     {
         $this->options['dev_mode'] && $this->info("[" . now()->format("Y-m-d H:i:s") . "] - socket [" . $socket->id . "] joined channel: " . $channel);
-        event(new SocketJoinedChannelEvent($socket, $channel));
+        event(new SocketJoinedChannelEvent($socket, $channel, $this));
 
         foreach ($this->onJoins as $fn) {
             $fn->call($this, $socket, $channel);
