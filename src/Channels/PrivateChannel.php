@@ -20,7 +20,6 @@ class PrivateChannel  extends ConsoleOutput
         $this->options['dev_mode'] && $this->info("[" . now()->format("Y-m-d H:i:s") . "] - " . "authorizating socket [$socket->id]");
 
         $authenticate = false;
-        dump($socket->request->headers, $data);
         $request      = Http::withHeaders($this->prepareHeaders($socket, $data));
         $this->options["dev_mode"] && $request->withOptions(["verify" => false]);
         $response = $request->post($this->options["authorizate"]["host"] . $this->options["authorizate"]["api"], ["channel_name" => $data["channel"]]);
