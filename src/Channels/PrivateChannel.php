@@ -20,7 +20,8 @@ class PrivateChannel  extends ConsoleOutput
         $this->options['dev_mode'] && $this->info("[" . now()->format("Y-m-d H:i:s") . "] - " . "authorizating socket [$socket->id]");
 
         $authenticate = false;
-        $request      = Http::withHeaders($this->prepareHeaders($socket, $this->options));
+        dump($socket->request->headers, $data);
+        $request      = Http::withHeaders($this->prepareHeaders($socket, $data));
         $this->options["dev_mode"] && $request->withOptions(["verify" => false]);
         $response = $request->post($this->options["authorizate"]["host"] . $this->options["authorizate"]["api"], ["channel_name" => $data["channel"]]);
         if ($response->status() == Response::HTTP_OK) {
@@ -32,18 +33,21 @@ class PrivateChannel  extends ConsoleOutput
                 "status" => $response->status()
             ];
         }
+        $this->options['dev_mode'] && $this->info("[" . now()->format("Y-m-d H:i:s") . "] - " . "socket [$socket->id] authenticate [$authenticate],res : " . json_encode($res));
 
         return [$authenticate, $res];
     }
 
-    public function prepareHeaders(Socket $socket, $options)
+
+    public function prepareHeaders(Socket $socket, $data)
     {
+        $dataHeaders = $data["auth"]["headers"] ?? [];
         $headers = [
-            'Cookie' => $socket->request->headers["cookie"],
-            'X-Requested-With' => "XMLHttpRequest"
+            'Cookie'           => $socket->request->headers["cookie"] ?? "",
+            'X-Requested-With' => "XMLHttpRequest",
         ];
 
-        return $headers;
+        return array_merge($headers, $dataHeaders);
     }
 
     public static function make(...$arg)
